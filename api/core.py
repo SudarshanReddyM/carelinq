@@ -82,6 +82,99 @@ def bp_monitor():
     return details
 
 
+@app.route('/test1',methods =['POST'] )
+def db_write():
+    input_data = request.get_json(force = True)
+    imei = input_data["imei"]
+    ts = input_data["ts"]
+    batteryVoltage = input_data["batteryVoltage"]
+    signalStrength = input_data["signalStrength"]
+    try:
+        rssi = input_data["rssi"]
+        deviceId = input_data["deviceId"]
+        try:
+            unit = input_data["values"]["unit"]
+            tare = input_data["values"]["tare"]
+            weight = input_data["values"]["weight"]
+            flag0 = 0
+        except:
+            flag0 = 1
+        if(flag0==0):
+            sql = "INSERT INTO BT005(imei,ts,batteryVoltage,signalStrength,unit,tare,weight,rssi,deviceId) VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s');"%(imei,ts,batteryVoltage,signalStrength,unit,tare,weight,rssi,deviceId)
+        else:
+            sql = "INSERT INTO BT005(imei,ts,batteryVoltage,signalStrength,rssi,deviceId) VALUES('%s','%s','%s','%s','%s','%s');"%(imei,ts,batteryVoltage,signalStrength,rssi,deviceId)
+        details = json.dumps(input_data)
+        print(details,flush=True)
+        result = db.engine.execute(sql) 
+        db.session.commit()
+    except:
+        try:
+            systolic = input_data["values"]["systolic"]
+            diastolic = input_data["values"]["diastolic"]
+            pulse = input_data["values"]["pulse"]
+            unit = input_data["values"]["unit"]
+            irregular = input_data["values"]["irregular"]
+            flag1 = 0
+        except:
+            flag1 = 1
+        if(flag1==0):
+            sql = "INSERT INTO BT105(imei,ts,batteryVoltage,signalStrength,systolic,diastolic,pulse,unit,irregular) VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s');"%(imei,ts,batteryVoltage,signalStrength,systolic,diastolic,pulse,unit,irregular)
+        else:
+            sql = "INSERT INTO BT105(imei,ts,batteryVoltage,signalStrength) VALUES('%s','%s','%s','%s');"%(imei,ts,batteryVoltage,signalStrength)
+        details = json.dumps(input_data)
+        print(details,flush=True)
+        result = db.engine.execute(sql) 
+        db.session.commit()
+    return details
+
+
+@app.route('/',methods = ['POST'])
+def test():
+    input_data = request.get_json(force = True)
+    imei = input_data["imei"]
+    ts = input_data["ts"]
+    batteryVoltage = input_data["batteryVoltage"]
+    signalStrength = input_data["signalStrength"]
+    if "rssi" in input_data:
+        rssi = input_data["rssi"]
+        deviceId = input_data["deviceId"]
+        if "values" in input_data:
+            unit = input_data["values"]["unit"]
+            tare = input_data["values"]["tare"]
+            weight = input_data["values"]["weight"]
+            flag0 = 0
+        else:
+            flag0 = 1
+        if(flag0==0):
+            sql = "INSERT INTO BT005(imei,ts,batteryVoltage,signalStrength,unit,tare,weight,rssi,deviceId) VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s');"%(imei,ts,batteryVoltage,signalStrength,unit,tare,weight,rssi,deviceId)
+        else:
+            sql = "INSERT INTO BT005(imei,ts,batteryVoltage,signalStrength,rssi,deviceId) VALUES('%s','%s','%s','%s','%s','%s');"%(imei,ts,batteryVoltage,signalStrength,rssi,deviceId)
+        details = json.dumps(input_data)
+        print(details,flush=True)
+        result = db.engine.execute(sql) 
+        db.session.commit()
+    else:
+        if "values" in input_data:
+            systolic = input_data["values"]["systolic"]
+            diastolic = input_data["values"]["diastolic"]
+            pulse = input_data["values"]["pulse"]
+            unit = input_data["values"]["unit"]
+            irregular = input_data["values"]["irregular"]
+            flag1 = 0
+        else:
+            flag1 = 1
+        if(flag1==0):
+            sql = "INSERT INTO BT105(imei,ts,batteryVoltage,signalStrength,systolic,diastolic,pulse,unit,irregular) VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s');"%(imei,ts,batteryVoltage,signalStrength,systolic,diastolic,pulse,unit,irregular)
+        else:
+            sql = "INSERT INTO BT105(imei,ts,batteryVoltage,signalStrength) VALUES('%s','%s','%s','%s');"%(imei,ts,batteryVoltage,signalStrength)
+        details = json.dumps(input_data)
+        print(details,flush=True)
+        result = db.engine.execute(sql) 
+        db.session.commit()
+    return details
+
+
+
 
 
 if __name__ == '__main__':
