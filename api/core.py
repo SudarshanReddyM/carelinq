@@ -167,9 +167,9 @@ def test():
         else:
             flag1 = 1
         if(flag1==0):
-            sql = "INSERT INTO BT105(imei,ts,batteryVoltage,signalStrength,systolic,diastolic,pulse,unit,irregular) VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s');"%(imei,ts,batteryVoltage,signalStrength,systolic,diastolic,pulse,unit,irregular)
+            sql = "INSERT INTO BT105(imei,ts,batteryVoltage,signalStrength,systolic,diastolic,pulse,unit,irregular,rssi,deviceId) VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s');"%(imei,ts,batteryVoltage,signalStrength,systolic,diastolic,pulse,unit,irregular,rssi,deviceId)
         else:
-            sql = "INSERT INTO BT105(imei,ts,batteryVoltage,signalStrength) VALUES('%s','%s','%s','%s');"%(imei,ts,batteryVoltage,signalStrength)
+            sql = "INSERT INTO BT105(imei,ts,batteryVoltage,signalStrength) VALUES('%s','%s','%s','%s','%s','%s');"%(imei,ts,batteryVoltage,signalStrength,rssi,deviceId)
         details = json.dumps(input_data)
         print(details,flush=True)
         result = db.engine.execute(sql) 
