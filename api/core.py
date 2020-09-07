@@ -135,9 +135,12 @@ def test():
     ts = input_data["ts"]
     batteryVoltage = input_data["batteryVoltage"]
     signalStrength = input_data["signalStrength"]
-    if "rssi" in input_data:
-        rssi = input_data["rssi"]
-        deviceId = input_data["deviceId"]
+    rssi = input_data["rssi"]
+    deviceId = input_data["deviceId"]
+    deviceSql = "SELECT deviceType from IMEI WHERE imei='%s'"%(imei)
+    tableName = db.engine.execute(deviceSql)
+    if(tableName=='BT005'):
+        
         if "values" in input_data:
             unit = input_data["values"]["unit"]
             tare = input_data["values"]["tare"]
